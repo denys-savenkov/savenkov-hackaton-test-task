@@ -3,6 +3,11 @@ def predict_masks(model, X_test):
 
 
 if __name__ == '__main__':
+    import random
+
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from skimage.io import imshow
     from sklearn.model_selection import train_test_split
 
     from load_data import load_data
@@ -18,4 +23,12 @@ if __name__ == '__main__':
     model = load_last_model()
     X, y = load_data(IMG_HEIGHT, IMG_WIDTH, IMG_CHANNELS)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=TEST_RATIO, random_state=SEED)
-    y_predicted = predict_masks(model, X_test)
+    y_pred = predict_masks(model, X_test)
+
+    ix = random.randint(0, len(y_pred))
+    imshow(X_test[ix])
+    plt.show()
+    imshow(np.squeeze(y_test[ix]))
+    plt.show()
+    imshow(np.squeeze(y_pred[ix]))
+    plt.show()

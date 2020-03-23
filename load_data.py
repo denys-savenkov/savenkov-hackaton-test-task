@@ -14,6 +14,9 @@ def load_data(image_height, image_width, image_channels):
     data_length = len(next(os.walk(TRAIN_DIR))[1])
     X = np.zeros((data_length, image_height, image_width, image_channels), dtype=np.uint8)
     y = np.zeros((data_length, image_height, image_width, 1), dtype=np.bool)
+
+    log_per = data_length // 20
+
     for i, dir_name in enumerate(next(os.walk(TRAIN_DIR))[1]):
 
         img_dir = os.path.join(TRAIN_DIR, dir_name, IMAGES_DIR_NAME)
@@ -33,5 +36,8 @@ def load_data(image_height, image_width, image_channels):
                                              preserve_range=True), axis=-1)
             mask = np.maximum(mask, mask_tmp)
         y[i] = mask
+
+        if not i % log_per:
+            print(f"Data loading: {i}/{data_length}")
 
     return X, y
